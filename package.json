@@ -8,12 +8,12 @@
     "console": "truffle console",
     "coverage": "scripts/coverage.sh",
     "lint": "yarn run lint:js && yarn run lint:sol",
-    "lint:fix": "npm run lint:js:fix",
+    "lint:fix": "yarn run lint:js:fix",
     "lint:js": "eslint .",
     "lint:js:fix": "eslint . --fix",
     "lint:sol": "solhint \"contracts/**/*.sol\"",
-    "prepack": "npm run build",
-    "test": "npm run compile && scripts/test.sh"
+    "prepack": "yarn run build",
+    "test": "yarn run compile && scripts/test.sh"
   },
   "keywords": [
     "solidity",
