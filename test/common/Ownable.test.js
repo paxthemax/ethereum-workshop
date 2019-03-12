@@ -1,9 +1,9 @@
-require('openzeppelin-test-helpers');
-const { shouldBehaveLikeOwnable } = require('./Ownable.behavior');
+require("openzeppelin-test-helpers");
+const { shouldBehaveLikeOwnable } = require("./Ownable.behavior");
 
-const Ownable = artifacts.require('OwnableMock');
+const Ownable = artifacts.require("OwnableMock");
 
-contract('Ownable', function ([_, owner, ...otherAccounts]) {
+contract("Ownable", function ([_, owner, ...otherAccounts]) {
   beforeEach(async function () {
     this.ownable = await Ownable.new({ from: owner });
   });

@@ -1,16 +1,16 @@
 const REAL_SIGNATURE_SIZE = 2 * 65; // 65 bytes in hexadecimal string legnth
 const PADDED_SIGNATURE_SIZE = 2 * 96; // 96 bytes in hexadecimal string length
 
-const DUMMY_SIGNATURE = `0x${web3.utils.padLeft('', REAL_SIGNATURE_SIZE)}`;
+const DUMMY_SIGNATURE = `0x${web3.utils.padLeft("", REAL_SIGNATURE_SIZE)}`;
 
 function toEthSignedMessageHash (messageHex) {
-  const messageBuffer = Buffer.from(messageHex.substring(2), 'hex');
+  const messageBuffer = Buffer.from(messageHex.substring(2), "hex");
   const prefix = Buffer.from(`\u0019Ethereum Signed Message:\n${messageBuffer.length}`);
   return web3.utils.sha3(Buffer.concat([prefix, messageBuffer]));
 }
 
 // signs message in node (ganache auto-applies "Ethereum Signed Message" prefix)
-const signMessage = (signer, messageHex = '0x') => {
+const signMessage = (signer, messageHex = "0x") => {
   return web3.eth.sign(messageHex, signer);
 };
 
