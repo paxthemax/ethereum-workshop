@@ -27,9 +27,9 @@ module.exports = {
       timeoutBlocks: 200,
     },
   },
-  // compilers: {
-  //   solc: {
-  //     version: 'native',
-  //   },
-  // },
+  compilers: {
+    solc: {
+      version: "^0.5.2",
+    },
+  },
 };
