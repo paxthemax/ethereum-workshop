@@ -25,7 +25,6 @@ module.exports = {
       gas: 5500000,
       confirmations: 2,
       timeoutBlocks: 200,
-      skipDryRun: true,
     },
   },
   compilers: {
