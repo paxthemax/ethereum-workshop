@@ -28,9 +28,9 @@ module.exports = {
       skipDryRun: true,
     },
   },
-  // compilers: {
-  //   solc: {
-  //     version: 'native',
-  //   },
-  // },
+  compilers: {
+    solc: {
+      version: "^0.5.2",
+    },
+  },
 };
