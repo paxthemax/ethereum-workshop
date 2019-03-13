@@ -72,7 +72,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
 
       try {
         await swap.close(swapID_swap, key);
-        throw new Error('Close accepted key that was 33 bytes, should only accept 32');
+        throw new Error("Close accepted key that was 33 bytes, should only accept 32");
       } catch (e) {
         assert.match(e.message, /Secret key must be 32 bytes/);
       }

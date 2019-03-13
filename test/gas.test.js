@@ -7,7 +7,7 @@ const expectFlatGas = async (network, length) => {
   assert.equal(res.mid.length, length);
   assert.equal(res.high.length, length);
   assert.equal(res.high, res.low);
-}
+};
 
 describe("Get gas price", () => {
   it("gets reasonable values for mainnet", async () => {
@@ -20,7 +20,7 @@ describe("Get gas price", () => {
   });
 
   it("gets reasonable values for development (2 Gwei flat)", async () => {
-    await  expectFlatGas("development", 10);
+    await expectFlatGas("development", 10);
   });
 
   it("gets reasonable values for testnets (100 Gwei flat)", async () => {
@@ -36,5 +36,5 @@ describe("Get gas price", () => {
     } catch (err) {
       assert.isTrue(true);
     }
-  })
+  });
 });
