@@ -3,7 +3,7 @@ const PADDED_SIGNATURE_SIZE = 2 * 96; // 96 bytes in hexadecimal string length
 
 const DUMMY_SIGNATURE = `0x${web3.utils.padLeft("", REAL_SIGNATURE_SIZE)}`;
 
-function toEthSignedMessageHash (messageHex) {
+function toEthSignedMessageHash(messageHex) {
   const messageBuffer = Buffer.from(messageHex.substring(2), "hex");
   const prefix = Buffer.from(`\u0019Ethereum Signed Message:\n${messageBuffer.length}`);
   return web3.utils.sha3(Buffer.concat([prefix, messageBuffer]));

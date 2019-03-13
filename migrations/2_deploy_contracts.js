@@ -1,6 +1,6 @@
 const IOEToken = artifacts.require("./IOEToken.sol");
 
-module.exports = function (deployer) {
+module.exports = function(deployer) {
   const cap = 1000 * 1e9;
   const name = "Test Tokens";
   const symbol = "TST";

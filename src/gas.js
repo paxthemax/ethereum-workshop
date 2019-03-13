@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const GAS_STATION_URL = "https://ethgasstation.info/json/ethgasAPI.json";
 
-const myFetch = async (url) => {
+const myFetch = async(url) => {
   const res = await axios.get(url);
   return res.data;
 };
@@ -14,7 +14,7 @@ const toWei = gasRes => new BN(gasRes, 10).mul(ten8).toString();
 // flatGas returns a fake api response with same gas for all types
 const flatGas = price => new Promise(resolve => resolve({ low: price, mid: price, high: price }));
 
-const getMainnetGasPrice = async () => {
+const getMainnetGasPrice = async() => {
   const res = await myFetch(GAS_STATION_URL);
   return {
     low: toWei(res.safeLow),
