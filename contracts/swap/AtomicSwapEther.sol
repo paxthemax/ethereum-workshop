@@ -43,7 +43,7 @@ contract AtomicSwapEther {
     }
 
     modifier onlyExpirableSwaps(bytes32 _swapID) {
-        require(now >= swaps[_swapID].timelock);
+        require(now >= swaps[_swapID].timelock, "Swap for the given ID is not yet expired");
         _;
     }
 
