@@ -12,13 +12,8 @@
     "lint:js": "eslint .",
     "lint:js:fix": "eslint . --fix",
     "lint:sol": "solhint \"contracts/**/*.sol\"",
-<<<<<<< HEAD
     "prepack": "yarn run build",
     "test": "./scripts/test.sh"
-=======
-    "prepack": "npm run build",
-    "test": "scripts/test.sh"
->>>>>>> Don't compile twice on yarn test
   },
   "keywords": [
     "solidity",
