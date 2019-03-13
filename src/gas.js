@@ -4,7 +4,8 @@ const axios = require("axios");
 const GAS_STATION_URL = "https://ethgasstation.info/json/ethgasAPI.json";
 
 const myFetch = async (url) => {
-  return axios.get(url);
+  const res = await axios.get(url);
+  return res.data;
 }
 
 const ten8 = new BN(10).pow(new BN(8));

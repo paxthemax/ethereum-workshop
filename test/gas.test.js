@@ -4,8 +4,9 @@ describe("Get gas price", () => {
   it("gets reasonable values", async () => {
     const res = await getGasPrice();
     assert.isObject(res);
-    assert.equal(length(res.low), 10);
-    assert.equal(length(res.mid), 10);
-    assert.equal(length(res.high), 10);
+    console.log(res);
+    assert.equal(res.low.length, 10);
+    assert.equal(res.mid.length, 10);
+    assert.equal(res.high.length, 10);
   });
 });
