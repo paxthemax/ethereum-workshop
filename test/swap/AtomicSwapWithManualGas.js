@@ -35,8 +35,6 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
     // from: https://github.com/trufflesuite/truffle/blob/cbd741b40696d6f7f6053ae007e1fdfb22483237/packages/truffle-contract/lib/execute.js#L19-L43
     const gasEstimate = await token.approve.estimateGas(swap.address, 10000);
 
-    console.log(web3.eth._provider.host);
-
     // let us try to calculate this by hand
     // https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#methods-mymethod-encodeabi
     const data = await token.contract.methods.approve(swap.address, 10000).encodeABI();
@@ -71,4 +69,38 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
 
     assert.equal(gasEstimate, myEstimate);
   });
+<<<<<<< HEAD
+=======
+
+  const addrToParam = addr => '0'.repeat(24) + addr.slice(2).toLowerCase();
+
+  const numToParam = num => {
+    const val = num.toString(16);
+    padding = 64 - val.length;
+    return '0'.repeat(padding) + val;
+  }
+
+  it("Calculate gas estimates manually", async () => {
+    const swap = await atomicSwap.deployed();
+    const token = await testERC20.deployed();
+
+    // this is encoded data
+    const expectedData = await token.contract.methods.approve(swap.address, 10000).encodeABI();
+
+    // let's do this manually
+    const selector = expectedData.slice(2, 10);
+    console.log(`selector: ${selector}`);
+
+    // function approve(address _spender, uint256 _value) public returns (bool)
+    const signature = "approve(address,uint256)";
+    const methodHash = web3.utils.keccak256(signature);
+    console.log(`methodHash: ${methodHash}`);
+    const methodId = methodHash.slice(2, 10);
+
+    const data = '0x' + methodId + addrToParam(swap.address) + numToParam(10000);
+    assert.equal(expectedData, data);
+  });
+
+>>>>>>> manually encoding
 });
+
