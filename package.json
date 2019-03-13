@@ -13,7 +13,7 @@
     "lint:js:fix": "eslint . --fix",
     "lint:sol": "solhint \"contracts/**/*.sol\"",
     "prepack": "yarn run build",
-    "test": "yarn run compile && scripts/test.sh"
+    "test": "./scripts/test.sh"
   },
   "keywords": [
     "solidity",
