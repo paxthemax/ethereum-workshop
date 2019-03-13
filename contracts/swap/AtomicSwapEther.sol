@@ -33,7 +33,7 @@ contract AtomicSwapEther {
     }
 
     modifier onlyOpenSwaps(bytes32 _swapID) {
-        require(swapStates[_swapID] == States.OPEN);
+        require(swapStates[_swapID] == States.OPEN, "No open swap found for the given ID");
         _;
     }
 
