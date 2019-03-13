@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 
 contract AtomicSwapEther {
-    uint256 constant SECRET_KEY_LENGTH = 32;
+    uint256 constant private SECRET_KEY_LENGTH = 32;
 
     struct Swap {
         uint256 timelock;
