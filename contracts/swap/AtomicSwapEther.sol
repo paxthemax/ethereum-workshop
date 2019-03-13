@@ -49,7 +49,7 @@ contract AtomicSwapEther {
 
     modifier onlyWithSecretKey(bytes32 _swapID, bytes memory _secretKey) {
         require(_secretKey.length == SECRET_KEY_LENGTH, "Secret key must be 32 bytes");
-        require(swaps[_swapID].secretLock == sha256(_secretKey));
+        require(swaps[_swapID].secretLock == sha256(_secretKey), "Secret key does not match secret lock");
         _;
     }
 
