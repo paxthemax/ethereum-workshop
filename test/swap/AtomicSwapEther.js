@@ -53,15 +53,22 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
   });
 
   describe("close()", () => {
+    const timeout = 100;
+    let swap;
+
+    before(async () => {
+      swap = await atomicSwap.deployed();
+    });
+
     it("Attempt withdrawal with secret key which is too long", async () => {
       const lock = "0x3d19f1e0f8d6eeab3acaefbc0fff6dbd255034f23c4a7493af886ec46dfafddf";
       const key = "0xff42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapID_swap = "0xffffff5948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
-      const swapID_expiry = "0xffffff38306a66a399755e8535300c42b1423cac321938e7fe30b252abf8fe74";
 
-      const swap = await atomicSwap.deployed();
-      const timeout = 100;
-      await swap.open(swapID_swap, accounts[0], lock, timeout, { from: accounts[0], value: 50000 });
+      await swap.open(swapID_swap, accounts[0], lock, timeout, {
+        from: accounts[0],
+        value: 50000,
+      });
 
       try {
         await swap.close(swapID_swap, key);
@@ -75,13 +82,10 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       const lock = "0xe4632a45b8e39230777acdb63647b9513d5686bb4d9cb7a3be2f89664eb0fd32";
       const key = "0xa990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapID_swap = "0xeeeeee5948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
-      const swapID_expiry = "0xeeeeee38306a66a399755e8535300c42b1423cac321938e7fe30b252abf8fe74";
 
-      const swap = await atomicSwap.deployed();
-      const timeout = 100;
       await swap.open(swapID_swap, accounts[0], lock, timeout, {
         from: accounts[0],
-        value: 50000
+        value: 50000,
       });
 
       try {
@@ -91,6 +95,24 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
         );
       } catch (e) {
         assert.match(e.message, /Secret key must be 32 bytes/);
+      }
+    });
+
+    it("Attempt withdrawal with incorrect secret key", async () => {
+      const lock = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
+      const key = "0xf2a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
+      const swapID_swap = "0xdddddd5948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
+
+      await swap.open(swapID_swap, accounts[0], lock, timeout, {
+        from: accounts[0],
+        value: 50000,
+      });
+
+      try {
+        await swap.close(swapID_swap, key);
+        throw new Error("Close accepted incorrect key");
+      } catch (e) {
+        assert.match(e.message, /Secret key does not match secret lock/);
       }
     });
   });
