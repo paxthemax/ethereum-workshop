@@ -46,6 +46,8 @@
     "truffle-hdwallet-provider": "^1.0.2"
   },
   "dependencies": {
+    "@iov/crypto": "^0.12.2",
+    "@iov/encoding": "^0.11.0",
     "axios": "^0.18.0"
   }
 }

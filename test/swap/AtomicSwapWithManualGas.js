@@ -2,6 +2,8 @@ const atomicSwap = artifacts.require("./AtomicSwapERC20.sol");
 const testERC20 = artifacts.require("./TestERC20.sol");
 
 const axios = require("axios");
+const { Keccak256 }  = require("@iov/crypto");
+const { Encoding }  = require("@iov/encoding");
 
 contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
   const lock = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
@@ -80,6 +82,8 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
     return '0'.repeat(padding) + val;
   }
 
+  const calcMethodId = signature => Encoding.toHex(new Keccak256(signature).digest()).slice(0, 8);
+
   it("Calculate gas estimates manually", async () => {
     const swap = await atomicSwap.deployed();
     const token = await testERC20.deployed();
@@ -93,9 +97,8 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
 
     // function approve(address _spender, uint256 _value) public returns (bool)
     const signature = "approve(address,uint256)";
-    const methodHash = web3.utils.keccak256(signature);
-    console.log(`methodHash: ${methodHash}`);
-    const methodId = methodHash.slice(2, 10);
+    const methodId = calcMethodId(signature);
+    console.log(`methodId: ${methodId}`);
 
     const data = '0x' + methodId + addrToParam(swap.address) + numToParam(10000);
     assert.equal(expectedData, data);
