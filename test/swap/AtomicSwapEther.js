@@ -20,7 +20,6 @@ async function sleep(ms) {
 contract("Cross Chain Atomic Swap with Ether", (accounts) => {
   const defaultHash = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
   const defaultKey = "0x42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
-  const defaultTimeout = 100; // seconds
 
   describe("Unsorted", () => {
     const swapID_swap = "0x0505915948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
