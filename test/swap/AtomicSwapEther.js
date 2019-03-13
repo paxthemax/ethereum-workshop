@@ -97,11 +97,11 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
     });
 
     it("Attempt withdrawal with incorrect secret key", async() => {
-      const lock = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
+      const hash = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
       const key = "0xf2a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapId = makeSwapId();
 
-      await swap.open(swapId, accounts[0], lock, defaultTimeout, {
+      await swap.open(swapId, accounts[0], hash, defaultTimeout, {
         from: accounts[0],
         value: 50000,
       });
