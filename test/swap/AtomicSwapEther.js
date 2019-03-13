@@ -7,6 +7,12 @@ function makeSwapId() {
   return `0x${crypto.randomBytes(32).toString("hex")}`;
 }
 
+/** Creates a timeout expressed as a UNIX timestamp */
+function makeTimeout(seconds = 100) {
+  const currentUnixTimestamp = Math.floor(Date.now() / 1000);
+  return currentUnixTimestamp + seconds;
+}
+
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -21,7 +27,8 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
 
     it("Deposit ether into the contract", async() => {
       const swap = await atomicSwap.deployed();
-      await swap.open(swapID_swap, accounts[0], defaultHash, defaultTimeout, { from: accounts[0], value: 50000 });
+      const timeout = makeTimeout();
+      await swap.open(swapID_swap, accounts[0], defaultHash, timeout, { from: accounts[0], value: 50000 });
     });
 
     it("Check the ether in the lock box", async() => {
@@ -47,7 +54,8 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
     it("Deposit ether into the contract", async() => {
       const swap = await atomicSwap.deployed();
       const swapId = makeSwapId();
-      await swap.open(swapId, accounts[0], defaultHash, defaultTimeout, { from: accounts[0], value: 50000 });
+      const timeout = makeTimeout();
+      await swap.open(swapId, accounts[0], defaultHash, timeout, { from: accounts[0], value: 50000 });
     });
   });
 
@@ -62,8 +70,9 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       const hash = "0x3d19f1e0f8d6eeab3acaefbc0fff6dbd255034f23c4a7493af886ec46dfafddf";
       const key = "0xff42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapId = makeSwapId();
+      const timeout = makeTimeout();
 
-      await swap.open(swapId, accounts[0], hash, defaultTimeout, {
+      await swap.open(swapId, accounts[0], hash, timeout, {
         from: accounts[0],
         value: 50000,
       });
@@ -80,8 +89,9 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       const hash = "0xe4632a45b8e39230777acdb63647b9513d5686bb4d9cb7a3be2f89664eb0fd32";
       const key = "0xa990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapId = makeSwapId();
+      const timeout = makeTimeout();
 
-      await swap.open(swapId, accounts[0], hash, defaultTimeout, {
+      await swap.open(swapId, accounts[0], hash, timeout, {
         from: accounts[0],
         value: 50000,
       });
@@ -100,8 +110,9 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       const hash = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
       const key = "0xf2a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
       const swapId = makeSwapId();
+      const timeout = makeTimeout();
 
-      await swap.open(swapId, accounts[0], hash, defaultTimeout, {
+      await swap.open(swapId, accounts[0], hash, timeout, {
         from: accounts[0],
         value: 50000,
       });
@@ -116,8 +127,9 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
 
     it("Successful withdrawal with correct secret key", async() => {
       const swapId = makeSwapId();
+      const timeout = makeTimeout();
 
-      await swap.open(swapId, accounts[0], defaultHash, defaultTimeout, {
+      await swap.open(swapId, accounts[0], defaultHash, timeout, {
         from: accounts[0],
         value: 50000,
       });
@@ -136,7 +148,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       const swap = await atomicSwap.deployed();
 
       const swapId = makeSwapId();
-      const timeout = 2;
+      const timeout = makeTimeout(2);
 
       await swap.open(swapId, accounts[0], defaultHash, timeout, { from: accounts[0], value: 50000 });
       await sleep(2000);
@@ -152,17 +164,18 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       );
     });
 
-    xit("fails when calling expire before the timeout", async() => {
+    it("fails when calling expire before the timeout", async() => {
       const swap = await atomicSwap.deployed();
 
       const swapId = makeSwapId();
-      await swap.open(swapId, accounts[0], defaultHash, defaultTimeout, { from: accounts[0], value: 50000 });
+      const timeout = makeTimeout();
+      await swap.open(swapId, accounts[0], defaultHash, timeout, { from: accounts[0], value: 50000 });
 
       try {
         await swap.expire(swapId, { from: accounts[0] });
         assert.fail("expire must not succeed");
       } catch (error) {
-        expect(error).to.match(/not yet expired/i);
+        expect(error.toString()).to.match(/not yet expired/i);
       }
     });
   });
