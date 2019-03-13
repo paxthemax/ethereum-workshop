@@ -52,7 +52,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
     });
   });
 
-  describe("Invalid key length", () => {
+  describe.only("Invalid key length", () => {
     it("Attempt withdrawal with secret key which is too long", async () => {
       const lock = "0x3d19f1e0f8d6eeab3acaefbc0fff6dbd255034f23c4a7493af886ec46dfafddf";
       const key = "0xff42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
@@ -67,9 +67,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
         await swap.close(swapID_swap, key);
         throw new Error('Close accepted key that was 33 bytes, should only accept 32');
       } catch (e) {
-        if (!/Secret key must be 32 bytes/.test(e.message)) {
-          throw e;
-        }
+        assert.match(e.message, /Secret key must be 32 bytes/);
       }
     });
 
@@ -92,9 +90,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
           "Close accepted key that was 31 bytes, should only accept 32"
         );
       } catch (e) {
-        if (!/Secret key must be 32 bytes/.test(e.message)) {
-          throw e;
-        }
+        assert.match(e.message, /Secret key must be 32 bytes/);
       }
     });
   });
