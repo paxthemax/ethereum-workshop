@@ -52,7 +52,7 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
     });
   });
 
-  describe.only("Invalid key length", () => {
+  describe("close()", () => {
     it("Attempt withdrawal with secret key which is too long", async () => {
       const lock = "0x3d19f1e0f8d6eeab3acaefbc0fff6dbd255034f23c4a7493af886ec46dfafddf";
       const key = "0xff42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
