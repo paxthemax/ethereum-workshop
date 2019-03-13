@@ -48,6 +48,7 @@
   "dependencies": {
     "@iov/crypto": "^0.12.2",
     "@iov/encoding": "^0.11.0",
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "web3x": "^3.0.5"
   }
 }

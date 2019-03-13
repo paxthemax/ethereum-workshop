@@ -2,10 +2,17 @@ const atomicSwap = artifacts.require("./AtomicSwapERC20.sol");
 const testERC20 = artifacts.require("./TestERC20.sol");
 
 const axios = require("axios");
-const { Keccak256 }  = require("@iov/crypto");
-const { Encoding }  = require("@iov/encoding");
 
-contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
+const {
+    addrToParam,
+    buildSignature,
+    numToParam,
+    calcMethodId,
+    newAbiCoder,
+    encodeParameters,
+} = require("../../src/abicoder.js");
+
+contract('Cross Chain Atomic Swap with ERC20', (accounts) => {
   const lock = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
   const swapID_swap = "0x0505915948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
 
@@ -71,20 +78,8 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
 
     assert.equal(gasEstimate, myEstimate);
   });
-<<<<<<< HEAD
-=======
 
-  const addrToParam = addr => '0'.repeat(24) + addr.slice(2).toLowerCase();
-
-  const numToParam = num => {
-    const val = num.toString(16);
-    padding = 64 - val.length;
-    return '0'.repeat(padding) + val;
-  }
-
-  const calcMethodId = signature => Encoding.toHex(new Keccak256(signature).digest()).slice(0, 8);
-
-  it("Calculate gas estimates manually", async () => {
+  it("Calculate data field manually", async () => {
     const swap = await atomicSwap.deployed();
     const token = await testERC20.deployed();
 
@@ -98,12 +93,32 @@ contract("Cross Chain Atomic Swap with ERC20", (accounts) => {
     // function approve(address _spender, uint256 _value) public returns (bool)
     const signature = "approve(address,uint256)";
     const methodId = calcMethodId(signature);
-    console.log(`methodId: ${methodId}`);
 
     const data = '0x' + methodId + addrToParam(swap.address) + numToParam(10000);
     assert.equal(expectedData, data);
   });
 
->>>>>>> manually encoding
+  it("Can encode from abi json", async () => {
+    const swap = await atomicSwap.deployed();
+    const token = await testERC20.deployed();
+
+    const { abi } = require("../../build/contracts/TestERC20.json");
+    const def = abi.find(x => x.name === "approve" && x.type === "function");
+    console.log(def);
+
+    const expectedData = await token.contract.methods.approve(swap.address, 12345).encodeABI();
+
+    // calculate the signature
+    const abiCoder = newAbiCoder();
+    const signature = buildSignature(def);
+    assert.equal("approve(address,uint256)", signature);
+    const methodId = calcMethodId(signature);
+    assert.equal(expectedData.slice(2, 10), methodId);
+
+    // encode the params
+    const params = encodeParameters(abiCoder, def.inputs, [swap.address, 12345]);
+    const data = '0x' + methodId + params.replace('0x', '');
+    assert.equal(expectedData, data);
+  });
 });
 
