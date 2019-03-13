@@ -5,8 +5,8 @@ const unit = new BN(10).pow(new BN(18));
 const amount = unit.mul(new BN(500));
 const zero = new BN(0);
 
-contract("Token", function (accounts) {
-  it("should return the initial balances", async function () {
+contract("Token", function(accounts) {
+  it("should return the initial balances", async function() {
     const token = await Token.deployed();
     const initial = unit.mul(new BN(100000));
     const owner_balance = await token.balanceOf.call(accounts[0]);
@@ -17,13 +17,13 @@ contract("Token", function (accounts) {
     assert(rest_balance.eq(zero), "accounts[1] balance is incorrect");
   });
 
-  it("should return the initial allowances", async function () {
+  it("should return the initial allowances", async function() {
     const token = await Token.deployed();
     const initial = await token.allowance.call(accounts[0], accounts[1]);
     assert(initial.eq(zero), "allowance is incorrect");
   });
 
-  it("should transfer from one account to another", async function () {
+  it("should transfer from one account to another", async function() {
     const token = await Token.deployed();
     const initial = await token.balanceOf.call(accounts[0]);
     // Transfer from accounts[0] to accounts[1]
@@ -34,7 +34,7 @@ contract("Token", function (accounts) {
     assert(receiver_balance.eq(amount), "amount was not added to receiver account");
   });
 
-  it("should not allow transfer with insufficient funds", async function () {
+  it("should not allow transfer with insufficient funds", async function() {
     const token = await Token.deployed();
     const sender_initial = await token.balanceOf.call(accounts[0]);
     const receiver_initial = await token.balanceOf.call(accounts[1]);
@@ -52,7 +52,7 @@ contract("Token", function (accounts) {
     }
   });
 
-  it("should transfer with allowance", async function () {
+  it("should transfer with allowance", async function() {
     const token = await Token.deployed();
     const sender_initial = await token.balanceOf.call(accounts[0]);
     const receiver_initial = await token.balanceOf.call("0x8bc790a583789367f72c9c59678ff85a00a5e5d0");
@@ -63,7 +63,7 @@ contract("Token", function (accounts) {
     assert(approval.eq(amount), "amount was not approved");
   });
 
-  it("should not allow transfer without allowance", async function () {
+  it("should not allow transfer without allowance", async function() {
     const token = await Token.deployed();
     const sender_initial = await token.balanceOf.call(accounts[1]);
     const receiver_initial = await token.balanceOf.call(accounts[2]);
@@ -80,7 +80,7 @@ contract("Token", function (accounts) {
     }
   });
 
-  it("should not allow transfer of negative value", async function () {
+  it("should not allow transfer of negative value", async function() {
     const token = await Token.deployed();
     const sender_initial = await token.balanceOf.call(accounts[0]);
     const receiver_initial = await token.balanceOf.call(accounts[1]);
@@ -98,7 +98,7 @@ contract("Token", function (accounts) {
     }
   });
 
-  it("should burn valid amount", async function () {
+  it("should burn valid amount", async function() {
     const token = await Token.deployed();
     const initial = await token.balanceOf.call(accounts[0]);
 
@@ -108,7 +108,7 @@ contract("Token", function (accounts) {
     assert(balance.eq(zero), "balance was not burned");
   });
 
-  it("should not allow burn without allowance", async function () {
+  it("should not allow burn without allowance", async function() {
     const token = await Token.deployed();
     const initial = await token.balanceOf.call(accounts[1]);
 
@@ -123,7 +123,7 @@ contract("Token", function (accounts) {
     }
   });
 
-  it("should not burn negative amount", async function () {
+  it("should not burn negative amount", async function() {
     const token = await Token.deployed();
     const initial = await token.balanceOf.call(accounts[0]);
 
