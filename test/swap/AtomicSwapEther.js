@@ -115,5 +115,18 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
         assert.match(e.message, /Secret key does not match secret lock/);
       }
     });
+
+    it("Successful withdrawal with correct secret key", async () => {
+      const lock = "0x261c74f7dd1ed6a069e18375ab2bee9afcb1095613f53b07de11829ac66cdfcc";
+      const key = "0x42a990655bffe188c9823a2f914641a32dcbb1b28e8586bd29af291db7dcd4e8";
+      const swapID_swap = "0xcccccc5948dcd6756a8f5169e9c539b69d87d9a4b8f57cbb40867d9f91790211";
+
+      await swap.open(swapID_swap, accounts[0], lock, timeout, {
+        from: accounts[0],
+        value: 50000,
+      });
+
+      assert.ok(await swap.close(swapID_swap, key));
+    });
   });
 });
