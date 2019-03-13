@@ -140,5 +140,15 @@ contract("Cross Chain Atomic Swap with Ether", (accounts) => {
       await sleep(2000);
       await swap.expire(swapId, { from: accounts[0] });
     });
+
+    xit("fails when calling expire before the timeout", async () => {
+      const swap = await atomicSwap.deployed();
+
+      const swapId = makeSwapId();
+      await swap.open(swapId, accounts[0], defaultHash, defaultTimeout, { from: accounts[0], value: 50000 });
+      await swap.expire(swapId, { from: accounts[0] })
+        .then(() => { throw new Error("must not resolve") })
+        .catch(error => expect(error).to.match(/not yet expired/i));
+    });
   });
 });
