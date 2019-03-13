@@ -13,7 +13,7 @@
     "lint:js:fix": "eslint . --fix",
     "lint:sol": "solhint \"contracts/**/*.sol\"",
     "prepack": "yarn run build",
-    "test": "yarn run compile && scripts/test.sh"
+    "test": "./scripts/test.sh"
   },
   "keywords": [
     "solidity",
@@ -45,5 +45,7 @@
     "truffle": "^5.0.0",
     "truffle-hdwallet-provider": "^1.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
 }
