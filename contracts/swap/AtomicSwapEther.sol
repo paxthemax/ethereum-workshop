@@ -2,6 +2,8 @@ pragma solidity ^0.5.0;
 
 
 contract AtomicSwapEther {
+    uint256 constant SECRET_KEY_LENGTH = 32;
+
     struct Swap {
         uint256 timelock;
         uint256 value;
@@ -46,7 +48,7 @@ contract AtomicSwapEther {
     }
 
     modifier onlyWithSecretKey(bytes32 _swapID, bytes memory _secretKey) {
-        // TODO: Require _secretKey length to conform to the spec
+        require(_secretKey.length == SECRET_KEY_LENGTH, "Secret key must be 32 bytes");
         require(swaps[_swapID].secretLock == sha256(_secretKey));
         _;
     }
