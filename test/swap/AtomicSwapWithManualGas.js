@@ -35,9 +35,10 @@ contract('Cross Chain Atomic Swap with ERC20', (accounts) => {
     const gasEstimate = await token.approve.estimateGas(swap.address, 10000);
 
     // let us try to calculate this by hand
-    const data = await token.approve.getData(swap.address, 10000);
+    // https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#methods-mymethod-encodeabi
+    const data = await token.contract.methods.approve(swap.address, 10000).encodeABI();
     const params = {to: token.address, data};
     const myEstimate = await web3.eth.estimateGas(params);
-    assert.Equal(gasEstimate, myEstimate * token.gasMultiplier);
+    assert.equal(gasEstimate, myEstimate); // * token.gasMultiplier);
   });
 });
